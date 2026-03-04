@@ -33,9 +33,7 @@ summary(catch_original)
 unique(catch_original$Region)
 ```
 
-RStudio has a keyboard shortcut for pipe (%>%) in dplyr:
-Mac: cmd + shift + M
-Windows: Ctrl + Shift + M
+RStudio has a keyboard shortcut for pipe (%\>%) in dplyr: Mac: cmd + shift + M Windows: Ctrl + Shift + M
 
 # Cleaning and Reshaping
 
@@ -49,17 +47,18 @@ head(catch_data)
 
 # to drop columns that we do not want
 catch_data <- catch_original %>%
-  select(-All -notesRegCode)
+  select(-All, -notesRegCode)
 head(catch_data)
 ```
 
-
 ## check column types
+
 ```{r}
 glimpse(catch_data)
 ```
 
 ## Changing column. contents with mutate()
+
 ```{r}
 # change Chinook column to numeric
 
@@ -191,7 +190,6 @@ head(catch_joined)
 
 ```
 
-
 ```{r}
 region_defs <- read.csv("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.303.1") %>% 
     select(code, mgmtArea) %>%
@@ -256,8 +254,3 @@ head(mean_region)
 library(here)
 write_csv(mean_region, here("data/mean_catch_by_region.csv"))
 ```
-
-
-
-
-
