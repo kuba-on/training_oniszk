@@ -5,5 +5,5 @@
 .DS_Store
 .quarto
 
-#ignore data directory
+#ignore the data directory
 data/
