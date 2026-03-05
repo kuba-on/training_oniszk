@@ -1,0 +1,89 @@
+---
+title: "data_quality"
+format: html
+---
+
+## Quick Data Summaries using `skimr` and `visdat`
+
+```{r, message=FALSE, warning=FALSE}
+#| message: false
+#| warning: false
+
+library(skimr)
+library(visdat)
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+bg_chem <- read_csv("../data/BGchem2008data.csv")
+```
+
+```{r}
+skim(bg_chem)
+```
+
+```{r}
+bg_chem %>%
+  select(Station, O2) %>%
+  group_by(Station) %>%
+  skim()
+```
+
+
+```{r}
+bg_chem_clean <- bg_chem %>%
+  mutate(o2 = na_if(O2, -99))
+
+view(bg_chem_clean)
+```
+
+```{r}
+bg_chem_clean <- read_csv("../data/BGchem2008data.csv", na = "-99")
+```
+
+```{r}
+vis_dat(bg_chem_clean) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0))
+```
+
+```{r}
+vis_dat(bg_chem_clean, facet = Station) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0))
+```
+
+## Formalised validation with `pointblank`
+
+```{r}
+library(pointblank)
+```
+
+
+```{r}
+# example
+
+t <- bg_chem %>%
+  col_vals_gt(columns = O2, value = 0, na_pass = TRUE) %>%
+  mutate(important_metric = O2 * 0.123)
+```
+
+```{r}
+al <- action_levels(warn_at = 1, stop_at = 10)
+al_latlon <- action_levels(warn_at = 1, stop_at = 1)
+
+bg_chem_clean %>% 
+    create_agent() %>% 
+    col_vals_gt(vars(O2, NO3, NO2, NH4, P, Si), value = 0, na_pass = TRUE) %>% 
+    col_vals_between(columns = vars(CTD_Salinity, Bottle_Salinity), left = 0, right = 42, na_pass = TRUE) %>% 
+    col_vals_between(Latitude, left = -90, right = 90, actions = al_latlon) %>%
+    col_vals_between(Longitude, left = -180, right = 180, actions = al_latlon) %>% 
+    interrogate()
+```
+
+
+
+
+
+
