@@ -27,8 +27,38 @@ head(species, 3)
 ```
 
 ```{r}
-preds <- read_csv("../data/Utqiagvik_predator_surveys.csv")
-nests <- read_csv("../data/Utqiagvik_nest_data.csv")
-eggs <- read_csv("../data/Utqiagvik_egg_measurements.csv")
+predator_survey <- read_csv("../data/Utqiagvik_predator_surveys.csv")
+nest_data <- read_csv("../data/Utqiagvik_nest_data.csv")
+egg_measures <- read_csv("../data/Utqiagvik_egg_measurements.csv")
 ```
 
+```{r}
+glimpse(nest_data)
+colnames(nest_data)
+unique(nest_data)
+summary(nest_data)
+```
+
+```{r}
+predator_comm_names <- left_join(predator_survey, species, by = c("species" = "alpha_code"))
+```
+
+```{r}
+comm_name <- function(df, species){
+  return_df <- left_join(df, species, by = c("species" = "alpha_code"))
+  return(return_df)
+}
+```
+
+```{r}
+predator_survey_clean <- predator_survey %>%
+  mutate( = na_if(O2, -99))
+  comm_name(predator_survey, species)
+nest_data_clean <-  comm_name(predator_survey, species)
+egg_measures_clean <-   comm_name(predator_survey, species)
+
+```
+
+```{r}
+
+```
