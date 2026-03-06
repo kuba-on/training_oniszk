@@ -35,7 +35,7 @@ bg_chem %>%
 
 ```{r}
 bg_chem_clean <- bg_chem %>%
-  mutate(o2 = na_if(O2, -99))
+  filter(species )
 
 view(bg_chem_clean)
 ```
