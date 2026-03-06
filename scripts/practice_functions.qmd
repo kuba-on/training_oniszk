@@ -52,7 +52,7 @@ comm_name <- function(df, species){
 
 ```{r}
 predator_survey_clean <- predator_survey %>%
-  mutate( = na_if(O2, -99))
+  mutate(O2 = na_if(O2, -99))
   comm_name(predator_survey, species)
 nest_data_clean <-  comm_name(predator_survey, species)
 egg_measures_clean <-   comm_name(predator_survey, species)
